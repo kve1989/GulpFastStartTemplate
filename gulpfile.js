@@ -66,10 +66,11 @@ gulp.task('styles', function () {
 
 // Custom Scripts
 gulp.task('scripts', function () {
-	return gulp.src('app/js/**/*.js')
-		.pipe(browserSync.reload({
-			stream: true
-		}))
+	return gulp.src('src/js/**/*.js')
+	.pipe(gulp.dest('app/js/'))
+	.pipe(browserSync.reload({
+		stream: true
+	}))
 });
 
 gulp.task('export', function () {
@@ -91,7 +92,7 @@ gulp.task('export', function () {
 
 gulp.task('watch', function () {
 	gulp.watch('src/scss/**/*.scss', gulp.parallel('styles'));
-	gulp.watch('app/js/*.js', gulp.parallel('scripts'));
+	gulp.watch('src/js/*.js', gulp.parallel('scripts'));
 	gulp.watch('app/**/*.html', gulp.parallel('html'));
 	gulp.watch('src/**/*.kit', gulp.parallel('kit'));
 });
