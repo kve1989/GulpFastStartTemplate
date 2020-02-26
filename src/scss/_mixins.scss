@@ -1,0 +1,25 @@
+@import 'vars';
+
+@mixin media-laptop {
+	@media (max-width: $bp2+px) {
+		@content;
+	}
+}
+
+@mixin media-tablet {
+	@media (max-width: $bp3+px) {
+		@content;
+	}
+}
+
+@mixin media-phone {
+	@media (max-width: $bp4+px) {
+		@content;
+	}
+}
+
+@mixin media-custom($width) {
+	@media (max-width: $width+px) {
+		@content;
+	}
+}
