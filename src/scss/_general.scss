@@ -12,6 +12,15 @@ body {
 	-webkit-text-size-adjust: 100%;
 }
 
+img {
+	opacity: 1;
+	transition: opacity 0.3s;
+}
+
+img[data-src] {
+	opacity: 0;
+}
+
 .container {
 	max-width: $mw+px;
 	margin: 0 auto;
