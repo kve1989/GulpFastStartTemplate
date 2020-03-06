@@ -8,6 +8,10 @@
   },
   "author": "kve",
   "license": "ISC",
+  "browserslist": [
+    "> 1%",
+    "not dead"
+  ],
   "devDependencies": {
     "browser-sync": "^2.26.7",
     "del": "^5.1.0",
