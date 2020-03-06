@@ -8,11 +8,12 @@ let gulp = require('gulp'),
 	del = require('del'),
 	kit = require('gulp-kit');
 
+let dist = "./app/"
 // Local Server
 gulp.task('browser-sync', function () {
 	browserSync.init({
 		server: {
-			baseDir: "app/"
+			baseDir: dist
 		},
 		notify: false,
 	});
@@ -25,7 +26,7 @@ gulp.task('clean', async function () {
 
 // HTML
 gulp.task('html', function () {
-	return gulp.src('app/**/*.html')
+	return gulp.src(dist + '**/*.html')
 		.pipe(browserSync.reload({
 			stream: true
 		}))
@@ -35,7 +36,7 @@ gulp.task('html', function () {
 gulp.task('kit', function () {
 	return gulp.src('src/*.kit')
 		.pipe(kit())
-		.pipe(gulp.dest('app/'))
+		.pipe(gulp.dest(dist))
 		.pipe(browserSync.reload({
 			stream: true
 		}))
@@ -60,14 +61,14 @@ gulp.task('styles', function () {
 		// 		}
 		// 	}
 		// })) // Optional. Comment out when debugging
-		.pipe(gulp.dest('app/css'))
+		.pipe(gulp.dest(dist + 'css'))
 		.pipe(browserSync.stream())
 });
 
 // Custom Scripts
 gulp.task('scripts', function () {
 	return gulp.src('src/js/**/*.js')
-	.pipe(gulp.dest('app/js/'))
+	.pipe(gulp.dest(dist + 'js/'))
 	.pipe(browserSync.reload({
 		stream: true
 	}))
@@ -93,8 +94,8 @@ gulp.task('export', function () {
 gulp.task('watch', function () {
 	gulp.watch('src/scss/**/*.scss', gulp.parallel('styles'));
 	gulp.watch('src/js/*.js', gulp.parallel('scripts'));
-	gulp.watch('app/**/*.html', gulp.parallel('html'));
 	gulp.watch('src/**/*.kit', gulp.parallel('kit'));
+	gulp.watch('app/**/*.html', gulp.parallel('html'));
 });
 
 gulp.task('default', gulp.parallel('styles', 'scripts', 'browser-sync', 'watch'));
