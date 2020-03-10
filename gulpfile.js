@@ -6,7 +6,8 @@ let gulp = require('gulp'),
 	concat = require('gulp-concat'),
 	autoprefixer = require('gulp-autoprefixer'),
 	del = require('del'),
-	kit = require('gulp-kit');
+	kit = require('gulp-kit'),
+	webpack = require("webpack-stream");
 
 let dist = "./app/"
 // Local Server
@@ -66,8 +67,34 @@ gulp.task('styles', function () {
 });
 
 // Custom Scripts
-gulp.task('scripts', function () {
-	return gulp.src('src/js/**/*.js')
+gulp.task('scripts', () => {
+	return gulp.src('./src/js/main.js')
+	.pipe(webpack({
+		mode: 'development',
+		output: {
+				filename: 'main.js'
+		},
+		watch: false,
+		devtool: "source-map",
+		module: {
+				rules: [
+					{
+						test: /\.m?js$/,
+						exclude: /(node_modules|bower_components)/,
+						use: {
+							loader: 'babel-loader',
+							options: {
+								presets: [['@babel/preset-env', {
+										debug: true,
+										corejs: 3,
+										useBuiltIns: "usage"
+								}]]
+							}
+						}
+					}
+				]
+			}
+	}))
 	.pipe(gulp.dest(dist + 'js/'))
 	.pipe(browserSync.reload({
 		stream: true
@@ -93,7 +120,7 @@ gulp.task('export', function () {
 
 gulp.task('watch', function () {
 	gulp.watch('src/scss/**/*.scss', gulp.parallel('styles'));
-	gulp.watch('src/js/*.js', gulp.parallel('scripts'));
+	gulp.watch('src/js/**/*.js', gulp.parallel('scripts'));
 	gulp.watch('src/**/*.kit', gulp.parallel('kit'));
 	gulp.watch('app/**/*.html', gulp.parallel('html'));
 });
