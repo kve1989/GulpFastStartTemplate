@@ -9,7 +9,9 @@ let gulp = require('gulp'),
 	kit = require('gulp-kit'),
 	webpack = require("webpack-stream");
 
-let dist = "./app/"
+let dist = "./app/";
+let build = "./build/";
+
 // Local Server
 gulp.task('browser-sync', function () {
 	browserSync.init({
@@ -17,12 +19,13 @@ gulp.task('browser-sync', function () {
 			baseDir: dist
 		},
 		notify: false,
+		port: 2233
 	});
 });
 
 // Task clean folder dist
 gulp.task('clean', async function () {
-	del.sync('dist')
+	del.sync(build)
 })
 
 // HTML
