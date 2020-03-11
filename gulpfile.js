@@ -5,8 +5,9 @@ let gulp = require('gulp'),
 	uglify = require('gulp-uglify'),
 	concat = require('gulp-concat'),
 	autoprefixer = require('gulp-autoprefixer'),
+	fileinclude = require('gulp-file-include'),
 	del = require('del'),
-	kit = require('gulp-kit'),
+	// kit = require('gulp-kit'),
 	webpack = require("webpack-stream");
 
 let dist = "./app/";
@@ -30,20 +31,15 @@ gulp.task('clean', async function () {
 
 // HTML
 gulp.task('html', function () {
-	return gulp.src(dist + '**/*.html')
-		.pipe(browserSync.reload({
-			stream: true
-		}))
-});
-
-// Kit
-gulp.task('kit', function () {
-	return gulp.src('src/*.kit')
-		.pipe(kit())
-		.pipe(gulp.dest(dist))
-		.pipe(browserSync.reload({
-			stream: true
-		}))
+	return gulp.src('./src/index.html')
+	.pipe(fileinclude({
+		prefix:'@@',
+		basepath: '@file'
+	}))
+	.pipe(gulp.dest(dist))
+	.pipe(browserSync.reload({
+		stream: true
+	}))
 });
 
 // Custom Styles
@@ -124,8 +120,8 @@ gulp.task('export', function () {
 gulp.task('watch', function () {
 	gulp.watch('src/scss/**/*.scss', gulp.parallel('styles'));
 	gulp.watch('src/js/**/*.js', gulp.parallel('scripts'));
-	gulp.watch('src/**/*.kit', gulp.parallel('kit'));
-	gulp.watch('app/**/*.html', gulp.parallel('html'));
+	// gulp.watch('src/**/*.kit', gulp.parallel('kit'));
+	gulp.watch('src/**/*.html', gulp.parallel('html'));
 });
 
 gulp.task('default', gulp.parallel('styles', 'scripts', 'browser-sync', 'watch'));
