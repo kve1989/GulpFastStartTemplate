@@ -30,7 +30,7 @@ gulp.task('clean', async function () {
 
 // HTML
 gulp.task('html', function () {
-	return gulp.src('./src/index.html')
+	return gulp.src('./src/*.html')
 	.pipe(fileinclude({
 		prefix:'@@',
 		basepath: '@file'
