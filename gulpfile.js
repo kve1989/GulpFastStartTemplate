@@ -7,7 +7,6 @@ let gulp = require('gulp'),
 	autoprefixer = require('gulp-autoprefixer'),
 	fileinclude = require('gulp-file-include'),
 	del = require('del'),
-	// kit = require('gulp-kit'),
 	webpack = require("webpack-stream");
 
 let dist = "./app/";
@@ -61,7 +60,7 @@ gulp.task('styles', function () {
 		// 		}
 		// 	}
 		// })) // Optional. Comment out when debugging
-		.pipe(gulp.dest(dist + 'css'))
+		.pipe(gulp.dest(dist + '/css'))
 		.pipe(browserSync.stream())
 });
 
@@ -120,7 +119,6 @@ gulp.task('export', function () {
 gulp.task('watch', function () {
 	gulp.watch('src/scss/**/*.scss', gulp.parallel('styles'));
 	gulp.watch('src/js/**/*.js', gulp.parallel('scripts'));
-	// gulp.watch('src/**/*.kit', gulp.parallel('kit'));
 	gulp.watch('src/**/*.html', gulp.parallel('html'));
 });
 
