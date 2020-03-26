@@ -7,7 +7,10 @@ let gulp = require('gulp'),
 	autoprefixer = require('gulp-autoprefixer'),
 	fileinclude = require('gulp-file-include'),
 	del = require('del'),
-	webpack = require("webpack-stream");
+	webpack = require("webpack-stream"),
+	imagemin = require('gulp-imagemin'),
+	imageminJpegRecompress = require('imagemin-jpeg-recompress'),
+	imageminPngquant = require('imagemin-pngquant');
 
 let dist = "./app/";
 let build = "./build/";
@@ -97,6 +100,21 @@ gulp.task('scripts', () => {
 	.pipe(browserSync.reload({
 		stream: true
 	}))
+});
+
+gulp.task('zipImg', () => {
+	gulp.src('src/**/*')
+	.pipe(imagemin([
+		imageminJpegRecompress({
+			progressive: true,
+			min: 70,
+			max: 75
+		}),
+		imageminPngquant({
+			quality: [0.7, 0.75]
+		})
+	]))
+	.pipe(gulp.dest(dist))
 });
 
 gulp.task('export', function () {
