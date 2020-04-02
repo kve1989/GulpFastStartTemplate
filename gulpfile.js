@@ -27,7 +27,7 @@ function browsersync() {
 		// proxy: localhost, // for PHP
 		notify: false
 	});
-}
+};
 
 function includehtml() {
 	return src(paths.src + '*.html')
@@ -88,7 +88,7 @@ function startwatch() {
 	watch('src/js/*.js', scripts);
 	watch('src/**/*.{' + fileswatch + '}').on('change', browserSync.reload);
 	watch('src/**/*.html', includehtml);
-}
+};
 
 exports.browsersync = browsersync;
 exports.assets = parallel(styles, scripts);
