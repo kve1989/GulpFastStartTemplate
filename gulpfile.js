@@ -1,34 +1,33 @@
 let gulp = require('gulp'),
-	sass = require('gulp-sass'),
-	browserSync = require('browser-sync'),
-	rename = require('gulp-rename'),
-	uglify = require('gulp-uglify'),
-	concat = require('gulp-concat'),
-	autoprefixer = require('gulp-autoprefixer'),
-	fileinclude = require('gulp-file-include'),
-	del = require('del'),
-	webpack = require("webpack-stream"),
-	imagemin = require('gulp-imagemin'),
-	imageminJpegRecompress = require('imagemin-jpeg-recompress'),
-	imageminPngquant = require('imagemin-pngquant');
+		sass = require('gulp-sass'),
+		browserSync = require('browser-sync'),
+		rename = require('gulp-rename'),
+		uglify = require('gulp-uglify'),
+		concat = require('gulp-concat'),
+		autoprefixer = require('gulp-autoprefixer'),
+		fileinclude = require('gulp-file-include'),
+		del = require('del'),
+		webpack = require("webpack-stream");
 
-let dist = "./app/";
-let build = "./build/";
+let paths = {
+	dist: "./app/",
+	build: "./build/"
+};
 
 // Local Server
 gulp.task('browser-sync', function () {
 	browserSync.init({
 		server: {
-			baseDir: dist
+			baseDir: paths.dist
 		},
-		notify: false,
-		port: 2233
+		// proxy: "localhost",
+		notify: false
 	});
 });
 
 // Task clean folder dist
 gulp.task('clean', async function () {
-	del.sync(build)
+	del.sync(paths.build)
 })
 
 // HTML
@@ -38,7 +37,7 @@ gulp.task('html', function () {
 		prefix:'@@',
 		basepath: '@file'
 	}))
-	.pipe(gulp.dest(dist))
+	.pipe(gulp.dest(paths.dist))
 	.pipe(browserSync.reload({
 		stream: true
 	}))
@@ -63,7 +62,7 @@ gulp.task('styles', function () {
 		// 		}
 		// 	}
 		// })) // Optional. Comment out when debugging
-		.pipe(gulp.dest(dist + '/css'))
+		.pipe(gulp.dest(paths.dist + '/css'))
 		.pipe(browserSync.stream())
 });
 
@@ -96,25 +95,10 @@ gulp.task('scripts', () => {
 				]
 			}
 	}))
-	.pipe(gulp.dest(dist + 'js/'))
+	.pipe(gulp.dest(paths.dist + 'js/'))
 	.pipe(browserSync.reload({
 		stream: true
 	}))
-});
-
-gulp.task('zipImg', () => {
-	gulp.src('src/**/*')
-	.pipe(imagemin([
-		imageminJpegRecompress({
-			progressive: true,
-			min: 70,
-			max: 75
-		}),
-		imageminPngquant({
-			quality: [0.7, 0.75]
-		})
-	]))
-	.pipe(gulp.dest(dist))
 });
 
 gulp.task('export', function () {
