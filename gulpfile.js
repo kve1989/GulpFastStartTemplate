@@ -1,9 +1,10 @@
 let localhost = 'localhost.dev',
-		preprocessor = 'sass',
+		preprocessor = 'scss',
 		fileswatch = 'html,htm,php,txt,yaml,twig,json,md',
 		paths = {
-			dist: "./app/",
-			build: "./build/"
+			dist: "app/",
+			build: "build/",
+			src: "src/"
 		};
 
 const { src, dest, parallel, series, watch } = require('gulp'),
@@ -23,14 +24,13 @@ function browsersync() {
 		server: {
 			baseDir: paths.dist
 		},
-		// proxy: localhost,
+		// proxy: localhost, // for PHP
 		notify: false
 	});
 }
 
-// HTML
 function includehtml() {
-	return src('./src/*.html')
+	return src(paths.src + '*.html')
 	.pipe(fileinclude({
 		prefix:'@@',
 		basepath: '@file'
@@ -40,7 +40,7 @@ function includehtml() {
 };
 
 function styles() {
-	return src('src/' + preprocessor + '/main.*')
+	return src(paths.src + preprocessor + '/main.*')
 		.pipe(eval(preprocessor)())
 		.pipe(concat('main.css'))
 		.pipe(autoprefixer({ overrideBrowserslist: ['last 10 versions'], grid: true }))
@@ -50,7 +50,7 @@ function styles() {
 };
 
 function scripts() {
-	return src('./src/js/main.js')
+	return src(paths.src + 'js/main.js')
 	.pipe(webpack({
 		mode: 'development',
 		output: {
