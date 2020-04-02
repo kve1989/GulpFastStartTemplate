@@ -1,74 +1,56 @@
-let gulp = require('gulp'),
-		sass = require('gulp-sass'),
-		browserSync = require('browser-sync'),
-		rename = require('gulp-rename'),
-		uglify = require('gulp-uglify'),
-		concat = require('gulp-concat'),
-		autoprefixer = require('gulp-autoprefixer'),
-		fileinclude = require('gulp-file-include'),
-		del = require('del'),
-		webpack = require("webpack-stream");
+let localhost = 'localhost.dev',
+		preprocessor = 'sass',
+		fileswatch = 'html,htm,php,txt,yaml,twig,json,md',
+		paths = {
+			dist: "./app/",
+			build: "./build/"
+		};
 
-let paths = {
-	dist: "./app/",
-	build: "./build/"
-};
+const { src, dest, parallel, series, watch } = require('gulp'),
+			sass = require('gulp-sass'),
+			scss = require('gulp-sass'),
+			browserSync = require('browser-sync').create(),
+			rename = require('gulp-rename'),
+			uglify = require('gulp-uglify'),
+			concat = require('gulp-concat'),
+			cleancss = require('gulp-clean-css'),
+			autoprefixer = require('gulp-autoprefixer'),
+			fileinclude = require('gulp-file-include'),
+			webpack = require("webpack-stream");
 
-// Local Server
-gulp.task('browser-sync', function () {
+function browsersync() {
 	browserSync.init({
 		server: {
 			baseDir: paths.dist
 		},
-		// proxy: "localhost",
+		// proxy: localhost,
 		notify: false
 	});
-});
-
-// Task clean folder dist
-gulp.task('clean', async function () {
-	del.sync(paths.build)
-})
+}
 
 // HTML
-gulp.task('html', function () {
-	return gulp.src('./src/*.html')
+function includehtml() {
+	return src('./src/*.html')
 	.pipe(fileinclude({
 		prefix:'@@',
 		basepath: '@file'
 	}))
-	.pipe(gulp.dest(paths.dist))
-	.pipe(browserSync.reload({
-		stream: true
-	}))
-});
+	.pipe(dest(paths.dist))
+	.pipe(browserSync.stream())
+};
 
-// Custom Styles
-gulp.task('styles', function () {
-	return gulp.src('src/scss/**/*.scss')
-		.pipe(sass({
-			outputStyle: 'expanded',
-			includePaths: [__dirname + '/node_modules']
-		}))
+function styles() {
+	return src('src/' + preprocessor + '/main.*')
+		.pipe(eval(preprocessor)())
 		.pipe(concat('main.css'))
-		.pipe(autoprefixer({
-			// grid: true, // Optional. Enable CSS Grid
-			overrideBrowserslist: ['last 10 versions']
-		}))
-		// .pipe(cleancss({
-		// 	level: {
-		// 		1: {
-		// 			specialComments: 0
-		// 		}
-		// 	}
-		// })) // Optional. Comment out when debugging
-		.pipe(gulp.dest(paths.dist + '/css'))
+		.pipe(autoprefixer({ overrideBrowserslist: ['last 10 versions'], grid: true }))
+		.pipe(cleancss( {level: { 1: { specialComments: 0 } } }))
+		.pipe(dest(paths.dist + '/css'))
 		.pipe(browserSync.stream())
-});
+};
 
-// Custom Scripts
-gulp.task('scripts', () => {
-	return gulp.src('./src/js/main.js')
+function scripts() {
+	return src('./src/js/main.js')
 	.pipe(webpack({
 		mode: 'development',
 		output: {
@@ -95,35 +77,22 @@ gulp.task('scripts', () => {
 				]
 			}
 	}))
-	.pipe(gulp.dest(paths.dist + 'js/'))
-	.pipe(browserSync.reload({
-		stream: true
-	}))
-});
+	// .pipe(uglify())
+	.pipe(dest(paths.dist + 'js/'))
+	.pipe(browserSync.stream())
+};
 
-gulp.task('export', function () {
-	let buildHtml = gulp.src('app/**/*.html')
-		.pipe(gulp.dest('dist'));
+function startwatch() {
+	watch('src/' + preprocessor + '/**/*', styles);
+	// watch(['themes/' + theme + '/assets/js/**/*.js', '!themes/' + theme + '/assets/js/*.min.js', 'themes/' + theme + '/assets/vendor/**/*.js'], scripts);
+	watch('src/js/*.js', scripts);
+	watch('src/**/*.{' + fileswatch + '}').on('change', browserSync.reload);
+	watch('src/**/*.html', includehtml);
+}
 
-	let BuildCss = gulp.src('app/css/**/*.css')
-		.pipe(gulp.dest('dist/css'));
-
-	let BuildJs = gulp.src('app/js/**/*.js')
-		.pipe(gulp.dest('dist/js'));
-
-	let BuildFonts = gulp.src('app/fonts/**/*.*')
-		.pipe(gulp.dest('dist/fonts'));
-
-	let BuildImg = gulp.src('app/img/**/*.*')
-		.pipe(gulp.dest('dist/img'));
-});
-
-gulp.task('watch', function () {
-	gulp.watch('src/scss/**/*.scss', gulp.parallel('styles'));
-	gulp.watch('src/js/**/*.js', gulp.parallel('scripts'));
-	gulp.watch('src/**/*.html', gulp.parallel('html'));
-});
-
-gulp.task('default', gulp.parallel('styles', 'scripts', 'browser-sync', 'watch'));
-
-gulp.task('build', gulp.series('clean', 'export'))
+exports.browsersync = browsersync;
+exports.assets = parallel(styles, scripts);
+exports.styles = styles;
+exports.scripts = scripts;
+exports.includehtml = includehtml;
+exports.default = parallel(styles, scripts, browsersync, startwatch, includehtml);
