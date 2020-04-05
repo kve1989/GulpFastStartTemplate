@@ -1,4 +1,4 @@
-let localhost = 'localhost.dev',
+let localhost = 'localhost:3030',
 		preprocessor = 'scss',
 		fileswatch = 'html,htm,php,txt,yaml,twig,json,md',
 		paths = {
@@ -21,10 +21,10 @@ const { src, dest, parallel, series, watch } = require('gulp'),
 
 function browsersync() {
 	browserSync.init({
-		server: {
-			baseDir: paths.dist
-		},
-		// proxy: localhost, // for PHP
+		// server: {
+		// 	baseDir: paths.dist
+		// },
+		proxy: localhost, // for PHP
 		notify: false
 	});
 };
@@ -87,6 +87,7 @@ function startwatch() {
 	// watch(['themes/' + theme + '/assets/js/**/*.js', '!themes/' + theme + '/assets/js/*.min.js', 'themes/' + theme + '/assets/vendor/**/*.js'], scripts);
 	watch('src/js/*.js', scripts);
 	watch('src/**/*.{' + fileswatch + '}').on('change', browserSync.reload);
+	watch('app/**/*.{' + fileswatch + '}').on('change', browserSync.reload);
 	watch('src/**/*.html', includehtml);
 };
 
