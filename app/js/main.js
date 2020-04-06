@@ -81,19 +81,23 @@
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = "./src/js/main.js");
+/******/ 	return __webpack_require__(__webpack_require__.s = "./app/#src/js/main.js");
 /******/ })
 /************************************************************************/
 /******/ ({
 
-/***/ "./src/js/main.js":
-/*!************************!*\
-  !*** ./src/js/main.js ***!
-  \************************/
+/***/ "./app/#src/js/main.js":
+/*!*****************************!*\
+  !*** ./app/#src/js/main.js ***!
+  \*****************************/
 /*! no static exports found */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
 
 
+document.addEventListener('DOMContentLoaded', function () {//Custom JS
+});
 
 /***/ })
 

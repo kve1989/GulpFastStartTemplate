@@ -4,7 +4,7 @@ let localhost = 'localhost:3030',
 		paths = {
 			dist: "app/",
 			build: "build/",
-			src: "src/"
+			src: "app/#src/"
 		};
 
 const { src, dest, parallel, series, watch } = require('gulp'),
@@ -21,10 +21,10 @@ const { src, dest, parallel, series, watch } = require('gulp'),
 
 function browsersync() {
 	browserSync.init({
-		// server: {
-		// 	baseDir: paths.dist
-		// },
-		proxy: localhost, // for PHP
+		server: {
+			baseDir: paths.dist
+		},
+		// proxy: localhost, // for PHP
 		notify: false
 	});
 };
@@ -83,12 +83,12 @@ function scripts() {
 };
 
 function startwatch() {
-	watch('src/' + preprocessor + '/**/*', styles);
+	watch(paths.src + preprocessor + '/**/*', styles);
 	// watch(['themes/' + theme + '/assets/js/**/*.js', '!themes/' + theme + '/assets/js/*.min.js', 'themes/' + theme + '/assets/vendor/**/*.js'], scripts);
-	watch('src/js/*.js', scripts);
-	watch('src/**/*.{' + fileswatch + '}').on('change', browserSync.reload);
-	watch('app/**/*.{' + fileswatch + '}').on('change', browserSync.reload);
-	watch('src/**/*.html', includehtml);
+	watch(paths.src + 'js/*.js', scripts);
+	watch(paths.dist + '**/*.{' + fileswatch + '}').on('change', browserSync.reload);
+	watch(paths.dist + '**/*.{' + fileswatch + '}').on('change', browserSync.reload);
+	watch(paths.src + '**/*.html', includehtml);
 };
 
 exports.browsersync = browsersync;
