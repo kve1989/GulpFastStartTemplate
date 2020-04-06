@@ -2,8 +2,8 @@ let localhost = 'localhost:3030',
 		preprocessor = 'scss',
 		fileswatch = 'html,htm,php,txt,yaml,twig,json,md',
 		paths = {
-			dist: "app/",
 			build: "build/",
+			dist: "app/",
 			src: "app/#src/"
 		};
 
