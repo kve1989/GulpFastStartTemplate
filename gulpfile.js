@@ -21,9 +21,7 @@ const { src, dest, parallel, series, watch } = require('gulp'),
 
 function browsersync() {
 	browserSync.init({
-		server: {
-			baseDir: paths.dist
-		},
+		server: {baseDir: paths.dist},
 		// proxy: localhost, // for PHP
 		notify: false
 	});
@@ -86,7 +84,7 @@ function startwatch() {
 	watch(paths.src + preprocessor + '/**/*', styles);
 	// watch(['themes/' + theme + '/assets/js/**/*.js', '!themes/' + theme + '/assets/js/*.min.js', 'themes/' + theme + '/assets/vendor/**/*.js'], scripts);
 	watch(paths.src + 'js/*.js', scripts);
-	watch(paths.dist + '**/*.{' + fileswatch + '}').on('change', browserSync.reload);
+	watch(paths.src + '**/*.{' + fileswatch + '}').on('change', browserSync.reload);
 	watch(paths.dist + '**/*.{' + fileswatch + '}').on('change', browserSync.reload);
 	watch(paths.src + '**/*.html', includehtml);
 };
