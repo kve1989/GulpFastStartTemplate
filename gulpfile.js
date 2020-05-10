@@ -1,11 +1,30 @@
 let localhost = 'localhost:3030',
-		preprocessor = 'scss',
+		preprocessor = 'scss', // Preprocessor (sass, scss)
 		fileswatch = 'html,htm,php,txt,yaml,twig,json,md',
-		paths = {
-			build: "build/",
-			dist: "app/",
-			src: "app/#src/"
-		};
+		baseDir = 'app';
+
+let paths = {
+		build: "build/",
+		dist: "app/",
+		src: "app/#src/",
+
+		scripts: {
+			src: [
+				baseDir + '/#src/js/main.js'
+			],
+			dest: baseDir + '/js',
+		},
+
+		styles: {
+			src: baseDir + '/#src/' + preprocessor + '/main.*',
+			dest: baseDir + '/css',
+		},
+
+
+		cssOutputName: 'main.min.css',
+		jsOutputName: 'main.min.js',
+};
+
 
 const { src, dest, parallel, series, watch } = require('gulp'),
 			sass = require('gulp-sass'),
@@ -16,43 +35,32 @@ const { src, dest, parallel, series, watch } = require('gulp'),
 			concat = require('gulp-concat'),
 			cleancss = require('gulp-clean-css'),
 			autoprefixer = require('gulp-autoprefixer'),
-			fileinclude = require('gulp-file-include'),
 			webpack = require("webpack-stream");
 
 function browsersync() {
 	browserSync.init({
-		server: {baseDir: paths.dist},
+		server: { baseDir: baseDir + '/' },
 		// proxy: localhost, // for PHP
 		notify: false
 	});
 };
 
-function includehtml() {
-	return src(paths.src + '*.html')
-	.pipe(fileinclude({
-		prefix:'@@',
-		basepath: '@file'
-	}))
-	.pipe(dest(paths.dist))
-	.pipe(browserSync.stream())
-};
-
 function styles() {
-	return src(paths.src + preprocessor + '/main.*')
+	return src(paths.styles.src)
 		.pipe(eval(preprocessor)())
-		.pipe(concat('main.css'))
+		.pipe(concat(paths.cssOutputName))
 		.pipe(autoprefixer({ overrideBrowserslist: ['last 10 versions'], grid: true }))
 		.pipe(cleancss( {level: { 1: { specialComments: 0 } } }))
-		.pipe(dest(paths.dist + '/css'))
+		.pipe(dest(paths.styles.dest))
 		.pipe(browserSync.stream())
 };
 
 function scripts() {
-	return src(paths.src + 'js/main.js')
+	return src(paths.scripts.src)
 	.pipe(webpack({
 		mode: 'development',
 		output: {
-				filename: 'main.js'
+				filename: paths.jsOutputName
 		},
 		watch: false,
 		devtool: "source-map",
@@ -76,17 +84,15 @@ function scripts() {
 			}
 	}))
 	// .pipe(uglify())
-	.pipe(dest(paths.dist + 'js/'))
+	.pipe(dest(paths.scripts.dest))
 	.pipe(browserSync.stream())
 };
 
 function startwatch() {
-	watch(paths.src + preprocessor + '/**/*', styles);
+	watch(baseDir + '/**/' + preprocessor + '/**/*', styles);
 	// watch(['themes/' + theme + '/assets/js/**/*.js', '!themes/' + theme + '/assets/js/*.min.js', 'themes/' + theme + '/assets/vendor/**/*.js'], scripts);
-	watch(paths.src + 'js/*.js', scripts);
-	watch(paths.src + '**/*.{' + fileswatch + '}').on('change', browserSync.reload);
-	watch(paths.dist + '**/*.{' + fileswatch + '}').on('change', browserSync.reload);
-	watch(paths.src + '**/*.html', includehtml);
+	watch([baseDir + '/**/*.js', '!' + paths.scripts.dest + '/*.min.js'], scripts);
+	watch(baseDir + '/**/*.{' + fileswatch + '}').on('change', browserSync.reload);
 };
 
 exports.browsersync = browsersync;
@@ -94,4 +100,4 @@ exports.assets = parallel(styles, scripts);
 exports.styles = styles;
 exports.scripts = scripts;
 exports.includehtml = includehtml;
-exports.default = parallel(styles, scripts, browsersync, startwatch, includehtml);
+exports.default = parallel(styles, scripts, browsersync, startwatch);
