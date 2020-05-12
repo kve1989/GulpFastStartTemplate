@@ -58,3 +58,17 @@ $maxWidth: 1280; //Ширина макетаы
 		font-size: calc( #{$mobSize + px} + #{$addSize} * (100vw / #{$maxWidth}) );
 	}
 }
+
+// $mainFontSize: 16px;
+// body {font-size: $mainFontSize}
+@function rem($pixels, $context: $mainFontSize) {
+	@if (unitless($pixels)) {
+		$pixels: $pixels * 1px;
+	}
+
+	@if (unitless($context)) {
+		$context: $context * 1px;
+	}
+
+	@return $pixels / $context * 1rem;
+}
