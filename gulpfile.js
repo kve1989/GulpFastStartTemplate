@@ -4,9 +4,6 @@ let localhost = 'localhost:3030',
 		baseDir = 'app';
 
 let paths = {
-		build: "build/",
-		dist: "app/",
-		src: "app/#src/",
 
 		scripts: {
 			src: [
