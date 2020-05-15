@@ -96,5 +96,4 @@ exports.browsersync = browsersync;
 exports.assets = parallel(styles, scripts);
 exports.styles = styles;
 exports.scripts = scripts;
-exports.includehtml = includehtml;
 exports.default = parallel(styles, scripts, browsersync, startwatch);
