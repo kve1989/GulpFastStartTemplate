@@ -30,11 +30,5 @@
     "webpack": "^4.42.0",
     "webpack-stream": "^5.2.1"
   },
-  "dependencies": {
-    "baguettebox.js": "^1.11.0",
-    "jquery": "^3.4.1",
-    "page-scroll-to-id": "^1.6.3",
-    "slick-carousel": "^1.8.1",
-    "wow.js": "^1.2.2"
-  }
+  "dependencies": {}
 }
