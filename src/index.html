@@ -13,21 +13,35 @@
 	<!-- Файл стилей -->
 	<link rel="stylesheet" href="css/main.css">
 	<!-- Иконка для сайта -->
-	<link rel="stylesheet icon" href="images/favicon.png">
+	<link rel="image/png icon" href="images/favicon.png">
 </head>
 
 <body>
 	<div class="wrapper">
 		<!-- Шапка сайта -->
-		@@include('./html/header.html')
+		<header class="header">
+			<div class="container">
+				<h1 class="text-center">Шапка сайта</h1>
+			</div>
+			<!-- /.container -->
+		</header>
+		<!-- /.header -->
+
 		<!-- Шапка сайта -->
 		<!-- Навигация -->
-		@@include('./html/nav.html')
+		<nav class="nav">
+			<div class="container">
+				<h2 class="text-center">Навигация</h2>
+			</div>
+			<!-- /.container -->
+		</nav>
+		<!-- /.nav -->
+
 		<!-- Навигация -->
 		<!-- Основной контент страницы -->
 		<main class="main">
 			<section class="container">
-				<h2 class="text-center">Content</h2>
+				<h2 class="text-center">Контент</h2>
 			</section>
 			<!-- /.container -->
 		</main>
@@ -35,12 +49,22 @@
 		<!-- Основной контент страницы -->
 
 		<!-- Подвал сайта -->
-		@@include('./html/footer.html')
+		<footer class="footer">
+			<div class="container">
+				<h2 class="text-center">Подвал сайта</h2>
+			</div>
+			<!-- /.container -->
+		</footer>
+		<!-- /.footer -->
+
 		<!-- Подвал сайта -->
 	</div>
-		<!-- /.wrapper -->
-	@@include('./html/popup.html')
-	@@include('./html/scripts.html')
+	<!-- /.wrapper -->
+	<div class="popup"></div>
+	<!-- /.popup -->
+
+	<script src="js/main.js"></script>
+
 </body>
 
 </html>
