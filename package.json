@@ -5,10 +5,8 @@
     "start": "gulp"
   },
   "browserslist": [
-    "last 2 version",
-    "not dead",
-    "not ie <= 11",
-    "iOS >= 12"
+    "last 2 versions",
+    "not dead"
   ],
   "devDependencies": {
     "@babel/core": "^7.10.3",
