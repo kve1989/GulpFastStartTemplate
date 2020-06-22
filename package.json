@@ -9,8 +9,10 @@
   "author": "kve",
   "license": "ISC",
   "browserslist": [
-    "> 1%",
-    "not dead"
+    "last 2 version",
+    "not dead",
+    "not ie <= 11",
+    "iOS >= 12"
   ],
   "devDependencies": {
     "@babel/core": "^7.8.7",
