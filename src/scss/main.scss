@@ -1,7 +1,9 @@
-@import 'reset';
-@import 'general';
-@import 'vars';
-@import 'mixins';
+@import 'utils/mixins';
+@import 'utils/vars';
+
+@import 'core/reset';
+@import 'core/general';
+@import 'core/fonts';
 
 :root {
 	--fontSize: 20px;
