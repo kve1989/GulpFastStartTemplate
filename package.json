@@ -9,8 +9,8 @@
     "not dead"
   ],
   "devDependencies": {
-    "@babel/core": "^7.10.5",
-    "@babel/preset-env": "^7.10.4",
+    "@babel/core": "^7.11.0",
+    "@babel/preset-env": "^7.11.0",
     "babel": "^6.23.0",
     "babel-core": "^6.26.3",
     "babel-loader": "^8.1.0",
@@ -20,10 +20,9 @@
     "gulp-autoprefixer": "^7.0.1",
     "gulp-clean-css": "^4.3.0",
     "gulp-concat": "^2.6.1",
-    "gulp-htmlmin": "^5.0.1",
     "gulp-rename": "^2.0.0",
     "gulp-sass": "^4.1.0",
-    "webpack": "^4.44.0",
+    "webpack": "^4.44.1",
     "webpack-stream": "^5.2.1"
   }
 }

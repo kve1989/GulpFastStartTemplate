@@ -2,7 +2,6 @@ import gulp from 'gulp';
 import sass from 'gulp-sass';
 import scss from 'gulp-sass';
 import browserSync from 'browser-sync';
-import htmlmin from "gulp-htmlmin";
 import rename from 'gulp-rename';
 import concat from 'gulp-concat';
 import cleancss from 'gulp-clean-css';
@@ -48,24 +47,12 @@ export const browsersync = () => {
 	});
 };
 
-/* html */
-export const html = () => {
-	return gulp.src(src + "/*.html")
-		.pipe(
-			htmlmin({
-				removeComments: true,
-				collapseWhitespace: true,
-			})
-		)
-		.pipe(gulp.dest(dist))
-		.pipe(browserSync.stream());
-};
-
 /* copy */
 export const copy = () => {
     return gulp.src([
 			paths.fonts.src,
 			paths.images.src,
+			src + '/*.html'
         ], {
             base: src
         })
@@ -121,7 +108,6 @@ export const scripts = () => {
 
 /* watch */
 export const watch = () => {
-	gulp.watch(src + '/*.html' , html);
 	gulp.watch(src + '/' + preprocessor + '/**/*', styles);
 	gulp.watch(src + '/**/*.js', scripts);
 	gulp.watch([paths.fonts.src, paths.images.src], gulp.series(copy));
@@ -129,6 +115,6 @@ export const watch = () => {
 };
 
 export default gulp.series(
-	gulp.parallel(html, styles, scripts, copy),
+	gulp.parallel(styles, scripts, copy),
 	gulp.parallel(watch, browsersync)
 );
