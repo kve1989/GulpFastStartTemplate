@@ -1,6 +1,6 @@
 root = true
 
-[*.css]
+[*.{css,scss,sass}]
 indent_size = 2
 indent_style = tab
 
