@@ -1,15 +1,10 @@
-@import 'utils/mixins';
-@import 'utils/vars';
+@import "utils/mixins";
+@import "utils/vars";
 
-@import 'core/reset';
-@import 'core/general';
-@import 'core/fonts';
-
-:root {
-	--fontSize: 20px;
-}
+@import "core/reset";
+@import "core/general";
+@import "core/fonts";
 
 body {
 	font-family: Arial, Helvetica, sans-serif;
-	font-size: var(--fontSize);
 }
