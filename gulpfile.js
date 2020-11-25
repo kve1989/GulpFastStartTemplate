@@ -7,7 +7,7 @@ import concat from "gulp-concat";
 import autoprefixer from "gulp-autoprefixer";
 import webpack from "webpack-stream";
 
-let localhost = "localhost:3030",
+let localhost = "localhost:3000",
 	preprocessor = "scss", // Preprocessor (sass, scss)
 	fileswatch = "html,htm,php,txt,yaml,twig,json,md",
 	src = "src",
