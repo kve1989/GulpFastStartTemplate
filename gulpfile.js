@@ -4,7 +4,6 @@ import scss from "gulp-sass";
 import browserSync from "browser-sync";
 import rename from "gulp-rename";
 import concat from "gulp-concat";
-import cleancss from "gulp-clean-css";
 import autoprefixer from "gulp-autoprefixer";
 import webpack from "webpack-stream";
 
@@ -63,22 +62,19 @@ export const copy = () => {
 
 /* styles */
 export const styles = () => {
-	return (
-		gulp
-			.src(paths.styles.src)
-			.pipe(eval(preprocessor)())
-			.pipe(sass({ outputStyle: "compressed" }))
-			.pipe(concat(paths.cssOutputName))
-			.pipe(
-				autoprefixer({
-					overrideBrowserslist: ["last 10 versions"],
-					grid: true,
-				})
-			)
-			// .pipe(cleancss({ level: { 1: { specialComments: 0 } } }))
-			.pipe(gulp.dest(paths.styles.dest))
-			.pipe(browserSync.stream())
-	);
+	return gulp
+		.src(paths.styles.src)
+		.pipe(eval(preprocessor)())
+		.pipe(sass({ outputStyle: "compressed" }))
+		.pipe(concat(paths.cssOutputName))
+		.pipe(
+			autoprefixer({
+				overrideBrowserslist: ["last 10 versions"],
+				grid: true,
+			})
+		)
+		.pipe(gulp.dest(paths.styles.dest))
+		.pipe(browserSync.stream());
 };
 
 /* scripts */
