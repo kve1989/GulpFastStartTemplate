@@ -83,9 +83,7 @@ export const scripts = () => {
 		.src(paths.scripts.src)
 		.pipe(
 			webpack({
-				mode: "development",
-				watch: false,
-				devtool: "source-map",
+				mode: "production",
 				module: {
 					rules: [
 						{
