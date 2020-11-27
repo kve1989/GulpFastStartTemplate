@@ -84,9 +84,6 @@ export const scripts = () => {
 		.pipe(
 			webpack({
 				mode: "development",
-				output: {
-					filename: paths.jsOutputName,
-				},
 				watch: false,
 				devtool: "source-map",
 				module: {
@@ -114,6 +111,7 @@ export const scripts = () => {
 				},
 			})
 		)
+		.pipe(rename(paths.jsOutputName))
 		.pipe(gulp.dest(paths.scripts.dest))
 		.pipe(browserSync.stream());
 };
