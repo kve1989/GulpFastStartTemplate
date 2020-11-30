@@ -8,7 +8,7 @@ import autoprefixer from "gulp-autoprefixer";
 import webpack from "webpack-stream";
 
 let localhost = "localhost:3000",
-	preprocessor = "scss", // Preprocessor (sass, scss)
+	preprocessor = "sass", // Preprocessor (sass, scss)
 	fileswatch = "html,htm,php,txt,yaml,twig,json,md",
 	src = "src",
 	dist = "dist";
@@ -116,13 +116,17 @@ export const scripts = () => {
 
 /* watch */
 export const watch = () => {
-	gulp.watch(src + "/" + preprocessor + "/**/*", styles);
-	gulp.watch(src + "/**/*.js", scripts);
 	gulp.watch(
-		[paths.fonts.src, paths.images.src, src + "/*.html"],
+		src + "/" + preprocessor + "/**/*",
+		{ usePolling: true },
+		styles
+	);
+	gulp.watch(src + "/**/*.js", { usePolling: true }, scripts);
+	gulp.watch(
+		[paths.fonts.src, paths.images.src, src + `**/*.{${fileswatch}}`],
+		{ usePolling: true },
 		gulp.series(copy)
 	);
-	// gulp.watch([src + "/fonts/**/*", src + "/images/**/*"], gulp.series(copy));
 };
 
 export default gulp.series(
