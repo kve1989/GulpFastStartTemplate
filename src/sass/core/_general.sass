@@ -9,17 +9,14 @@ body
 	-moz-text-size-adjust: 100%
 	-webkit-text-size-adjust: 100%
 
-
 img[data-src]
 	opacity: 0
-
 
 .container
 	max-width: $mw+px
 	margin: 0 auto
 	width: 100%
 	padding: 0 15px
-
 
 .wrapper
 	overflow: hidden
@@ -28,21 +25,17 @@ img[data-src]
 	min-height: 100%
 	position: relative
 
-
 .main
 	flex: 1 0 auto
 
-
 .footer
 	flex: 0 0 auto
-
 
 .ibg
 	background-position: center
 	background-size: cover
 	background-repeat: no-repeat
 	position: relative
-
 	& img
 		width: 0
 		height: 0
@@ -51,8 +44,6 @@ img[data-src]
 		left: 0
 		opacity: 0
 		visibility: hidden
-
-
 
 // Блок отвечающий за затемнение при показе баннеров и обратной связи
 // .overlay
@@ -70,46 +61,5 @@ img[data-src]
 .text
 	&-center
 		text-align: center
-
-
 	&-right
 		text-align: right
-
-
-
-.play-btn
-	height: 80px
-	width: 80px
-	background: var(--accent)
-	display: flex
-	align-items: center
-	justify-content: center
-	position: absolute
-	top: 50%
-	left: 50%
-	transform: translate(-50%, -50%)
-	border-radius: 50%
-	cursor: pointer
-	animation: pulses 2s infinite
-
-	svg
-		width: 20px
-		height: 20px
-		fill: #fff
-
-
-
-@keyframes pulses
-	0%
-		transform: translate(-50%, -50%) scale(0.95)
-		box-shadow: 0 0 0 0 rgba(#f1c109, 0.7)
-
-
-	70%
-		transform: translate(-50%, -50%) scale(1)
-		box-shadow: 0 0 0 60px rgba(#f1c109, 0)
-
-
-	100%
-		transform: translate(-50%, -50%) scale(0.95)
-		box-shadow: 0 0 0 0 rgba(#f1c109, 0)
