@@ -6,10 +6,12 @@ import rename from "gulp-rename";
 import concat from "gulp-concat";
 import autoprefixer from "gulp-autoprefixer";
 import webpack from "webpack-stream";
+import del from "del";
+import panini from "panini";
 
 let localhost = "localhost:3000",
 	preprocessor = "sass", // Preprocessor (sass, scss)
-	fileswatch = "html,htm,php,txt,yaml,twig,json,md",
+	fileswatch = "htm,php,txt,yaml,twig,json,md",
 	src = "src",
 	dist = "dist";
 
@@ -46,10 +48,25 @@ export const browsersync = () => {
 	});
 };
 
+/* html */
+export const html = () => {
+	return gulp
+		.src(src + "/*.html")
+		.pipe(
+			panini({
+				root: src,
+				layouts: src + "/layouts",
+				partials: src + "/parts",
+			})
+		)
+		.pipe(gulp.dest(dist))
+		.pipe(browserSync.reload({ stream: true }));
+};
+
 /* copy */
 export const copy = () => {
 	return gulp
-		.src([paths.fonts.src, paths.images.src, src + "/*.html"], {
+		.src([paths.fonts.src, paths.images.src], {
 			base: src,
 		})
 		.pipe(gulp.dest(dist))
@@ -114,6 +131,11 @@ export const scripts = () => {
 		.pipe(browserSync.stream());
 };
 
+/* del */
+export const clean = () => {
+	return del(dist);
+};
+
 /* watch */
 export const watch = () => {
 	gulp.watch(
@@ -122,6 +144,7 @@ export const watch = () => {
 		styles
 	);
 	gulp.watch(src + "/**/*.js", { usePolling: true }, scripts);
+	gulp.watch(src + "/**/*.html", { usePolling: true }, html);
 	gulp.watch(
 		[paths.fonts.src, paths.images.src, src + `**/*.{${fileswatch}}`],
 		{ usePolling: true },
@@ -130,6 +153,6 @@ export const watch = () => {
 };
 
 export default gulp.series(
-	gulp.parallel(styles, scripts, copy),
+	gulp.series(clean, gulp.parallel(html, styles, scripts, copy)),
 	gulp.parallel(watch, browsersync)
 );
