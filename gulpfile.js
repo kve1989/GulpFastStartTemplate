@@ -1,6 +1,6 @@
 import gulp from "gulp";
-import sass from "gulp-sass";
-import scss from "gulp-sass";
+import gulpSass from "gulp-sass";
+import dartSass from "sass";
 import browserSync from "browser-sync";
 import rename from "gulp-rename";
 import concat from "gulp-concat";
@@ -9,8 +9,9 @@ import webpack from "webpack-stream";
 import del from "del";
 import panini from "panini";
 
+const sass = gulpSass(dartSass);
+
 let localhost = "localhost:3000",
-	preprocessor = "sass", // Preprocessor (sass, scss)
 	fileswatch = "htm,php,txt,yaml,twig,json,md",
 	src = "src",
 	dist = "dist";
@@ -81,7 +82,7 @@ export const copy = () => {
 export const styles = () => {
 	return gulp
 		.src(paths.styles.src)
-		.pipe(eval(preprocessor)())
+		.pipe(sass())
 		.pipe(sass({ outputStyle: "compressed" }))
 		.pipe(concat(paths.cssOutputName))
 		.pipe(
