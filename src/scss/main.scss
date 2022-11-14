@@ -1,10 +1,5 @@
-@import "utils/mixins";
-@import "utils/vars";
-@import "utils/ibg";
-
-@import "core/reset";
-@import "core/general";
-@import "core/fonts";
+@import "utils/**/*";
+@import "core/**/*";
 
 body {
 	font-family: Arial, Helvetica, sans-serif;

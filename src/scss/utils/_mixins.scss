@@ -1,5 +1,3 @@
-@import 'vars';
-
 @mixin media-laptop {
 	@media (max-width: $bp2+px) {
 		@content;
