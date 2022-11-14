@@ -1,20 +1,22 @@
 import gulp from "gulp";
 import gulpSass from "gulp-sass";
 import dartSass from "sass";
+import sassglob from "gulp-sass-glob";
 import browserSync from "browser-sync";
 import rename from "gulp-rename";
 import concat from "gulp-concat";
 import autoprefixer from "gulp-autoprefixer";
 import webpack from "webpack-stream";
-import del from "del";
+import { deleteAsync } from "del";
 import panini from "panini";
 
 const sass = gulpSass(dartSass);
 
 let localhost = "localhost:3000",
-	fileswatch = "htm,php,txt,yaml,twig,json,md",
+	fileswatch = "html,php,txt,yaml,twig,json,md",
 	src = "src",
-	dist = "dist";
+	dist = "dist",
+	preprocessor = 'scss';
 
 let paths = {
 	scripts: {
@@ -82,7 +84,7 @@ export const copy = () => {
 export const styles = () => {
 	return gulp
 		.src(paths.styles.src)
-		.pipe(sass())
+		.pipe(sassglob())
 		.pipe(sass({ outputStyle: "compressed" }))
 		.pipe(concat(paths.cssOutputName))
 		.pipe(
@@ -134,7 +136,7 @@ export const scripts = () => {
 
 /* del */
 export const clean = () => {
-	return del(dist);
+	return deleteAsync(dist);
 };
 
 /* watch */
