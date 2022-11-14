@@ -7,6 +7,7 @@ import rename from "gulp-rename";
 import concat from "gulp-concat";
 import imagemin from "gulp-imagemin";
 import autoprefixer from "gulp-autoprefixer";
+import plumber from "gulp-plumber";
 import webpack from "webpack-stream";
 import { deleteAsync } from "del";
 import panini from "panini";
@@ -56,6 +57,7 @@ export const browsersync = () => {
 export const html = () => {
 	return gulp
 		.src(src + "/*.html")
+		.pipe(plumber())
 		.pipe(
 			panini({
 				root: src,
@@ -73,6 +75,7 @@ export const copy = () => {
 		.src([paths.fonts.src, paths.images.src], {
 			base: src,
 		})
+		.pipe(plumber())
 		.pipe(imagemin())
 		.pipe(gulp.dest(dist))
 		.pipe(
@@ -86,6 +89,7 @@ export const copy = () => {
 export const styles = () => {
 	return gulp
 		.src(paths.styles.src)
+		.pipe(plumber())
 		.pipe(sassglob())
 		.pipe(sass({ outputStyle: "compressed" }))
 		.pipe(concat(paths.cssOutputName))
@@ -103,6 +107,7 @@ export const styles = () => {
 export const scripts = () => {
 	return gulp
 		.src(paths.scripts.src)
+		.pipe(plumber())
 		.pipe(
 			webpack({
 				mode: "production",
