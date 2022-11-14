@@ -5,6 +5,7 @@ import sassglob from "gulp-sass-glob";
 import browserSync from "browser-sync";
 import rename from "gulp-rename";
 import concat from "gulp-concat";
+import imagemin from "gulp-imagemin";
 import autoprefixer from "gulp-autoprefixer";
 import webpack from "webpack-stream";
 import { deleteAsync } from "del";
@@ -20,12 +21,12 @@ let localhost = "localhost:3000",
 
 let paths = {
 	scripts: {
-		src: src + "/js/main.js",
+		src: src + "/js/app.js",
 		dest: dist + "/js",
 	},
 
 	styles: {
-		src: src + "/" + preprocessor + "/main.*",
+		src: src + "/" + preprocessor + "/app.*",
 		dest: dist + "/css",
 	},
 
@@ -37,8 +38,8 @@ let paths = {
 		src: src + "/" + "images/**/*",
 	},
 
-	cssOutputName: "main.css",
-	jsOutputName: "main.js",
+	cssOutputName: "app.css",
+	jsOutputName: "app.js",
 };
 
 /* browsersync */
@@ -72,6 +73,7 @@ export const copy = () => {
 		.src([paths.fonts.src, paths.images.src], {
 			base: src,
 		})
+		.pipe(imagemin())
 		.pipe(gulp.dest(dist))
 		.pipe(
 			browserSync.stream({
