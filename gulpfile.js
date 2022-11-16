@@ -56,17 +56,17 @@ export const browsersync = () => {
 /* html */
 export const html = () => {
 	return gulp
-		.src(src + "/*.html")
-		.pipe(plumber())
-		.pipe(
-			panini({
-				root: src,
-				layouts: src + "/layouts",
-				partials: src + "/parts",
-			})
-		)
-		.pipe(gulp.dest(dist))
-		.pipe(browserSync.reload({ stream: true }));
+        .src(src + "/*.html")
+        .pipe(plumber())
+        .pipe(
+            panini({
+                root: src,
+                layouts: src + "/layouts",
+                partials: src + "/partials",
+            })
+        )
+        .pipe(gulp.dest(dist))
+        .pipe(browserSync.reload({ stream: true }));
 };
 
 /* copy */
