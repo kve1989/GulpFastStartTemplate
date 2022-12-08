@@ -15,47 +15,47 @@ import panini from "panini";
 const sass = gulpSass(dartSass);
 
 let localhost = "localhost:3000",
-	fileswatch = "html,php,txt,yaml,twig,json,md",
-	src = "src",
-	dist = "dist";
+    fileswatch = "html,php,txt,yaml,twig,json,md",
+    src = "src",
+    dist = "dist";
 
 let paths = {
-	scripts: {
-		src: src + "/js/app.js",
-		dest: dist + "/js",
-	},
+    scripts: {
+        src: src + "/js/app.js",
+        dest: dist + "/js",
+    },
 
-	styles: {
-		src: src + "/scss/app.*",
-		dest: dist + "/css",
-	},
+    styles: {
+        src: src + "/scss/app.*",
+        dest: dist + "/css",
+    },
 
-	fonts: {
-		src: src + "/" + "fonts/**/*",
-	},
+    fonts: {
+        src: src + "/" + "fonts/**/*",
+    },
 
-	images: {
-		src: src + "/" + "images/**/*",
-	},
-	cssDevFile: "",
-	jsDevFile: "",
-	cssOutputName: "app.css",
-	jsOutputName: "app.js",
+    images: {
+        src: src + "/" + "images/**/*",
+    },
+    cssDevFile: "",
+    jsDevFile: "",
+    cssOutputName: "app.css",
+    jsOutputName: "app.js",
 };
 
 /* browsersync */
 export const browsersync = () => {
-	browserSync.init({
-		server: { baseDir: dist + "/" },
-		// proxy: localhost, // for PHP
-		notify: false,
-		ui: false,
-	});
+    browserSync.init({
+        server: { baseDir: dist + "/" },
+        // proxy: localhost, // for PHP
+        notify: false,
+        ui: false,
+    });
 };
 
 /* html */
 export const html = () => {
-	return gulp
+    return gulp
         .src(src + "/*.html")
         .pipe(plumber())
         .pipe(
@@ -71,23 +71,23 @@ export const html = () => {
 
 /* copy */
 export const copy = () => {
-	return gulp
-		.src([paths.fonts.src, paths.images.src], {
-			base: src,
-		})
-		.pipe(plumber())
-		.pipe(imagemin())
-		.pipe(gulp.dest(dist))
-		.pipe(
-			browserSync.stream({
-				once: true,
-			})
-		);
+    return gulp
+        .src([paths.fonts.src, paths.images.src], {
+            base: src,
+        })
+        .pipe(plumber())
+        .pipe(imagemin())
+        .pipe(gulp.dest(dist))
+        .pipe(
+            browserSync.stream({
+                once: true,
+            })
+        );
 };
 
 /* styles */
 export const styles = () => {
-	return gulp
+    return gulp
         .src(paths.styles.src)
         .pipe(plumber({
                 errorHandler: function (err) {
@@ -119,64 +119,64 @@ export const styles = () => {
 
 /* scripts */
 export const scripts = () => {
-	return gulp
-		.src(paths.scripts.src)
-		.pipe(plumber())
-		.pipe(
-			webpack({
-				mode: "production",
-				module: {
-					rules: [
-						{
-							test: /\.m?js$/,
-							exclude: /(node_modules|bower_components)/,
-							use: {
-								loader: "babel-loader",
-								options: {
-									presets: [
-										[
-											"@babel/preset-env",
-											{
-												debug: true,
-												corejs: 3,
-												useBuiltIns: "usage",
-											},
-										],
-									],
-								},
-							},
-						},
-					],
-				},
-			})
-		)
-		.pipe(rename(paths.jsOutputName))
-		.pipe(gulp.dest(paths.scripts.dest))
-		.pipe(browserSync.stream());
+    return gulp
+        .src(paths.scripts.src)
+        .pipe(plumber())
+        .pipe(
+            webpack({
+                mode: "production",
+                module: {
+                    rules: [
+                        {
+                            test: /\.m?js$/,
+                            exclude: /(node_modules|bower_components)/,
+                            use: {
+                                loader: "babel-loader",
+                                options: {
+                                    presets: [
+                                        [
+                                            "@babel/preset-env",
+                                            {
+                                                debug: true,
+                                                corejs: 3,
+                                                useBuiltIns: "usage",
+                                            },
+                                        ],
+                                    ],
+                                },
+                            },
+                        },
+                    ],
+                },
+            })
+        )
+        .pipe(rename(paths.jsOutputName))
+        .pipe(gulp.dest(paths.scripts.dest))
+        .pipe(browserSync.stream());
 };
 
 /* del */
 export const clean = () => {
-	return deleteAsync(dist);
+    return deleteAsync(dist);
 };
 
 /* watch */
 export const watch = () => {
-	gulp.watch(
-		src + "/scss/**/*",
-		{ usePolling: true },
-		styles
-	);
-	gulp.watch(src + "/**/*.js", { usePolling: true }, scripts);
-	gulp.watch(src + "/**/*.html", { usePolling: true }, html);
-	gulp.watch(
-		[paths.fonts.src, paths.images.src, src + `**/*.{${fileswatch}}`],
-		{ usePolling: true },
-		gulp.series(copy)
-	);
+    gulp.watch(
+        src + "/scss/**/*",
+        { usePolling: true },
+        styles
+    );
+    gulp.watch(src + "/**/*.js", { usePolling: true }, scripts);
+    gulp.watch(src + "/**/*.html", { usePolling: true }, html);
+    gulp.watch(
+        [paths.fonts.src, paths.images.src, src + `**/*.{${fileswatch}}`],
+        { usePolling: true },
+        gulp.series(copy)
+    );
 };
 
 export default gulp.series(
-	gulp.series(clean, gulp.parallel(html, styles, scripts, copy)),
-	gulp.parallel(watch, browsersync)
+    gulp.series(clean, gulp.parallel(html, styles, scripts, copy)),
+    gulp.parallel(watch, browsersync)
 );
