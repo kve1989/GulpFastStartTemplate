@@ -5,6 +5,7 @@
     "start": "gulp"
   },
   "browserslist": [
+    ">0.3%",
     "last 2 versions",
     "not dead"
   ],
