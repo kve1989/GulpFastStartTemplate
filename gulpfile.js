@@ -89,7 +89,8 @@ export const copy = () => {
 export const styles = () => {
     return gulp
         .src(paths.styles.src)
-        .pipe(plumber({
+        .pipe(
+            plumber({
                 errorHandler: function (err) {
                     notify.onError({
                         title: "SCSS Error",
@@ -109,8 +110,7 @@ export const styles = () => {
         .pipe(concat(paths.cssOutputName))
         .pipe(
             autoprefixer({
-                overrideBrowserslist: ["last 10 versions"],
-                grid: true,
+                grid: 'autoplace',
             })
         )
         .pipe(gulp.dest(paths.styles.dest))
