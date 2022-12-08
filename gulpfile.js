@@ -17,8 +17,7 @@ const sass = gulpSass(dartSass);
 let localhost = "localhost:3000",
 	fileswatch = "html,php,txt,yaml,twig,json,md",
 	src = "src",
-	dist = "dist",
-	preprocessor = 'scss';
+	dist = "dist";
 
 let paths = {
 	scripts: {
@@ -27,7 +26,7 @@ let paths = {
 	},
 
 	styles: {
-		src: src + "/" + preprocessor + "/app.*",
+		src: src + "/scss/app.*",
 		dest: dist + "/css",
 	},
 
@@ -38,7 +37,8 @@ let paths = {
 	images: {
 		src: src + "/" + "images/**/*",
 	},
-
+	cssDevFile: "",
+	jsDevFile: "",
 	cssOutputName: "app.css",
 	jsOutputName: "app.js",
 };
@@ -88,19 +88,33 @@ export const copy = () => {
 /* styles */
 export const styles = () => {
 	return gulp
-		.src(paths.styles.src)
-		.pipe(plumber())
-		.pipe(sassglob())
-		.pipe(sass({ outputStyle: "compressed" }))
-		.pipe(concat(paths.cssOutputName))
-		.pipe(
-			autoprefixer({
-				overrideBrowserslist: ["last 10 versions"],
-				grid: true,
-			})
-		)
-		.pipe(gulp.dest(paths.styles.dest))
-		.pipe(browserSync.stream());
+        .src(paths.styles.src)
+        .pipe(plumber({
+                errorHandler: function (err) {
+                    notify.onError({
+                        title: "SCSS Error",
+                        message: "Error: <%= error.message %>",
+                    })(err);
+                    this.emit("end");
+                },
+            })
+        )
+        .pipe(sassglob())
+        .pipe(
+            sass({
+                outputStyle: "compressed",
+                includePaths: "./node_modules/",
+            })
+        )
+        .pipe(concat(paths.cssOutputName))
+        .pipe(
+            autoprefixer({
+                overrideBrowserslist: ["last 10 versions"],
+                grid: true,
+            })
+        )
+        .pipe(gulp.dest(paths.styles.dest))
+        .pipe(browserSync.stream());
 };
 
 /* scripts */
@@ -149,7 +163,7 @@ export const clean = () => {
 /* watch */
 export const watch = () => {
 	gulp.watch(
-		src + "/" + preprocessor + "/**/*",
+		src + "/scss/**/*",
 		{ usePolling: true },
 		styles
 	);
