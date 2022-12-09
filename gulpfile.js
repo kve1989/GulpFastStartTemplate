@@ -8,6 +8,7 @@ import concat from "gulp-concat";
 import imagemin from "gulp-imagemin";
 import autoprefixer from "gulp-autoprefixer";
 import plumber from "gulp-plumber";
+import notify from "gulp-notify";
 import webpack from "webpack-stream";
 import { deleteAsync } from "del";
 import panini from "panini";
@@ -55,6 +56,7 @@ export const browsersync = () => {
 
 /* html */
 export const html = () => {
+    panini.refresh();
     return gulp
         .src(src + "/*.html")
         .pipe(plumber())
